@@ -11,11 +11,8 @@ let readLines filePath = System.IO.File.ReadLines(filePath)
 type Position = int * int
 type Position2 = int * int * int
 
-let scorePosition ((a,b): Position) = 
-    a * b
-
-let scorePosition2 ((a, b, c): Position2) = 
-    b * c
+let scorePosition (a,b) = a * b
+let scorePosition2 (_, b, c) = b * c
 
 
 let (|Prefix|_|) (p:string) (s:string) =
@@ -24,7 +21,7 @@ let (|Prefix|_|) (p:string) (s:string) =
     else
         None
 
-let updatePosition (acc: Position) elem =
+let updatePosition acc elem =
     let f, d = acc
     match elem with
     | Prefix "forward" x -> (f + x, d)
@@ -38,7 +35,7 @@ example.Split [|'\n'|] |> Seq.fold updatePosition (0,0) |> scorePosition |> prin
 readLines "input.txt" |> Seq.fold updatePosition (0,0) |> scorePosition |> printfn "%d"
 
 
-let updatePosition2 (acc: Position2) elem =
+let updatePosition2 acc elem =
     let a, f, d = acc
     match elem with
     | Prefix "forward" x -> (a, f + x, d + (a * x))
